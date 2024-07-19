@@ -166,6 +166,7 @@ int main(void)
 
 	start_scan();
 	//---------basically it's going to keep calling bt_le_scan_start() until an empty (nonexistent) device is found
+	address_list_iter = 0;
 	multi_connect();
 	return 0;
 }
@@ -262,7 +263,8 @@ static bool my_devices_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t type
 	since the program currently disconnects from a device as soon as it finishes the handshake, that device may start advertising
 	again, making this loop indefinitely.
 	we would simply remove function "bt_conn_disconnect" from function "connected" and place it elsewhere with a better-paramaterized call.
-	we would also have to edit the various references to default_conn, instead reference the desired address in address_list
+	we would also have to edit the various references to default_conn, instead reference the desired address in address_list. when disconnecting, 
+ 	we can assign the current address_list[iterator] to NULL and decrement the iterator
 	*/
 	return true;
 
